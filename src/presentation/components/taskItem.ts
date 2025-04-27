@@ -201,3 +201,4 @@ function updateCompletedTitle() {
     completedTitle.textContent = `Terminées (${completedCount})`;
   }
 }
+

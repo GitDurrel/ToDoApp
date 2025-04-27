@@ -2,7 +2,7 @@ import { TaskModel } from '../../business/models/TaskModel.js';
 import { taskItem } from '../components/taskItem.js';
 import { TaskServices } from '../../business/services/TaskServices.js';
 
-export function createTaskPage(title: string, faIconClass: string, showDate: boolean = false, showForm: boolean = true): HTMLElement {
+export function createTaskPage(title: string, faIconClass: string, showDate: boolean = false): HTMLElement {
     const container = document.createElement('div');
 
     const today = new Date().toLocaleDateString('fr-FR', {
@@ -21,18 +21,24 @@ export function createTaskPage(title: string, faIconClass: string, showDate: boo
                 ${showDate ? `<div class="task-date">${today}</div>` : ""}
             </div>
 
-            ${showForm ? `
+            ${title === 'Tâches non terminées' ? '' : `
             <div class="add-task">
                 <span class="add-task-icon"> + </span>
                 <input type="text" placeholder="Ajouter une tâche" class="task-input" />
                 <div class="popup-add hidden">
                     <input type="time" class="task-time-input" />
                     ${(title === 'Important' || title === 'Mes tâches') 
-                        ? `<input type="date" class="task-date-input" />` 
-                        : ``}
+                    ? `<input type="date" class="task-date-input" />` 
+                    : ``}
                     <button class="confirm-add-btn">Ajouter</button>
                 </div>
             </div>
+            `}
+            ${title === 'Tâches non terminées' ? `
+                <div class="instruction-text">
+                    <i class="fas fa-info-circle"></i>
+                    Cette page liste automatiquement toutes vos tâches non terminées
+                </div>
             ` : ''}
         </div>
         <div id="incomplete-tasks-container"></div>
@@ -78,8 +84,8 @@ export function createTaskPage(title: string, faIconClass: string, showDate: boo
                 }
                 // Utiliser la date d'aujourd'hui pour "Ma journée"
                 let taskDate;
-                if (title === "Aujourd'hui") {
-                    taskDate = new Date(); // Date du jour pour "Ma journée"
+                if (title === "Ma journée") {
+                    taskDate = new Date(); 
                 } else {
                 taskDate = dateValue ? new Date(dateValue) : new Date();
                 }
