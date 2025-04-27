@@ -2,7 +2,7 @@
 
 ```bash
 # Cloner le repository
-git clone https://github.com/votre-username/vue-dash.git
+git clone https://github.com/GitDurrel/ToDoApp.git
 cd ToDoApp
 
 # Installer les dépendances
