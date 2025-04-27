@@ -1,0 +1,369 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+/* Style pour la navbar*/
+.navbar {
+    background-color: #2563eb;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    z-index: 1000;
+    overflow: hidden;
+  }
+  
+  .navbar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .search-container {
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #2563eb;
+  }
+  
+  .search-input {
+    padding: 10px 10px 10px 40px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+  }
+
+/* Style pour la sidebar*/
+
+
+#app > div > div {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+aside{
+    background-color: #ffff;
+    color: white;
+    padding: 10px 0;
+    width: 250px;
+    position: relative;
+    top: 0px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+
+.sidebar-button:first-child {
+    margin-top: 20px;
+  }
+
+  .sidebar-button {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 12px 20px;
+    margin: 15px 0;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 5px;
+    font-size: 16px;
+    color: black;
+  }
+  
+  .sidebar-button i {
+    font-size: 1.1em;
+    width: 20px;
+    text-align: center;
+    transition: color 0.3s;
+  }
+  
+  .sidebar-button:hover {
+    background-color: #dcdde1;
+  }
+  
+  .sidebar-button:hover i {
+    color: #2563eb;
+  }
+  
+  .sidebar-button.active {
+    background-color: #2563eb;
+    color: white;
+  }
+  
+  .sidebar-button.active i {
+    color: white;
+  }
+
+  /* Style pour le contenu principal */
+  #content {
+    padding: 20px;
+    flex: 1;
+    background-color: #9CA3AF;
+  }
+  
+
+/* Style page */
+
+.main-content {
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 1rem auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.main-content-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #2563eb;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.2rem;
+}
+
+.title-text {
+  display: flex;
+  align-items: center;
+}
+
+.task-date {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #F9FAFB;
+}
+
+.add-task {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.add-task-icon {
+  font-size: 1.8rem;
+  color: #2563eb; /* Bleu */
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  left: 0px;
+  transform: translateY(-50%);
+  margin: 0 0.5rem;
+}
+
+.task-input {
+  padding: 0.7rem 2rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.task-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.popup-add {
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: #f5f5f5;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: opacity 0.3s ease;
+  min-width: fit-content;
+  max-width: 100%;
+}
+
+
+.popup-add.hidden {
+  display: none;
+}
+
+.confirm-add-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-add-btn:hover {
+  background-color: #1e40af;
+}
+
+*{
+  outline: 1px solid red;
+}   
+
+
+/* Conteneur des tâches */
+
+/* Une tâche */
+.todo-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s;
+}
+
+.todo-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #1d4ed8; /* bleu corporate */
+}
+
+.star-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #f59e0b; /* jaune corporate */
+}
+
+.task-section {
+  margin-top: 20px;
+}
+
+/* Titre de la tâche */
+.todo-item span {
+  flex: 1;
+  font-size: 16px;
+  color: #374151; 
+}
+
+/* Quand la case est cochée, on barre le texte */
+.todo-item input[type="checkbox"]:checked + span {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+/* Checkbox ronde */
+.task-checkbox {
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  border: 2px solid #3b82f6; 
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.task-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.task-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height: 10px;
+  width: 10px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* Checkbox étoile */
+.star-checkbox {
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  background-color: transparent;
+  mask: url('https://www.svgrepo.com/show/13691/star.svg') no-repeat center;
+  -webkit-mask: url('https://www.svgrepo.com/show/13691/star.svg') no-repeat center;
+  background-size: cover;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+}
+
+.star-checkbox:checked {
+  background-color: #facc15; 
+}
+
+.flex-1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.font-medium {
+  font-weight: 500;
+  color: #374151;
+}
+
+.font-medium + .font-medium {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* .completed-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #4a5568;
+} */
+
+/* .completed-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+} */
+
+#completed-section {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #f5f5f5; /* gris clair */
+  border-radius: 8px;
+  max-width: 800px; /* limite la largeur */
+  margin-left: auto;
+  margin-right: auto;
+}
+#completed-section h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+#completed-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
