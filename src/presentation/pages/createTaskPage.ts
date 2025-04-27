@@ -2,7 +2,7 @@ import { TaskModel } from '../../business/models/TaskModel.js';
 import { taskItem } from '../components/taskItem.js';
 import { TaskServices } from '../../business/services/TaskServices.js';
 
-export function createTaskPage(title: string, faIconClass: string, showDate: boolean = false): HTMLElement {
+export function createTaskPage(title: string, faIconClass: string, showDate: boolean = false, showForm: boolean = true): HTMLElement {
     const container = document.createElement('div');
 
     const today = new Date().toLocaleDateString('fr-FR', {
@@ -21,6 +21,7 @@ export function createTaskPage(title: string, faIconClass: string, showDate: boo
                 ${showDate ? `<div class="task-date">${today}</div>` : ""}
             </div>
 
+            ${showForm ? `
             <div class="add-task">
                 <span class="add-task-icon"> + </span>
                 <input type="text" placeholder="Ajouter une tâche" class="task-input" />
@@ -32,6 +33,7 @@ export function createTaskPage(title: string, faIconClass: string, showDate: boo
                     <button class="confirm-add-btn">Ajouter</button>
                 </div>
             </div>
+            ` : ''}
         </div>
         <div id="incomplete-tasks-container"></div>
     `;
@@ -113,7 +115,7 @@ function loadTasks(pageTitle: string, container: HTMLElement) {
     // Filtrer les tâches selon la page actuelle
     let filteredTasks = tasks;
     
-    if (pageTitle === 'Aujourd\'hui') {
+    if (pageTitle === 'Ma journée') {
         // Filtrer les tâches d'aujourd'hui
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -125,7 +127,7 @@ function loadTasks(pageTitle: string, container: HTMLElement) {
     } else if (pageTitle === 'Important') {
         // Filtrer les tâches importantes
         filteredTasks = tasks.filter(task => task.data.estImportante);
-    } else if (pageTitle === 'Non terminées') {
+    } else if (pageTitle === 'Tâches non terminées') {
         // Filtrer les tâches non terminées
         filteredTasks = tasks.filter(task => !task.data.estTerminee);
     }

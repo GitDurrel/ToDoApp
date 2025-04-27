@@ -58,6 +58,45 @@ export function taskItem(task: Task): HTMLDivElement {
 function handleTaskEvents(taskDiv: HTMLDivElement, task: Task) {
   const checkbox = taskDiv.querySelector(".task-checkbox") as HTMLInputElement;
   const starCheckbox = taskDiv.querySelector(".star-checkbox") as HTMLInputElement;
+
+
+    // // ! Gérer le changement de l'état terminé
+    // checkbox.addEventListener("change", () => {
+    //   task.estTerminee = checkbox.checked;
+      
+    //   // Trouver la tâche correspondante dans le service
+    //   const allTasks = TaskServices.getTasks();
+    //   const taskModel = allTasks.find(t => t.data.id === task.id);
+      
+    //   if (taskModel) 
+    //   {
+    //     // Mettre à jour l'état de la tâche
+    //     taskModel.data.estTerminee = task.estTerminee;
+    //     TaskServices.updateTask(taskModel);
+          
+    //     // Émettre un événement personnalisé pour informer les autres instances
+    //     const taskUpdateEvent = new CustomEvent('task-updated', {
+    //         detail: { taskId: task.id, estTerminee: task.estTerminee }
+    //     });
+    //     document.dispatchEvent(taskUpdateEvent);
+    //   }
+      
+    //   // ! Gérer le déplacement visuel de la tâche
+    //   moveTaskBasedOnStatus(taskDiv, task);
+    //   });
+    
+    // // Écouter les mises à jour des autres instances
+    // document.addEventListener('task-updated', ((event: CustomEvent) => {
+    //   if (event.detail.taskId === task.id) 
+    //   {
+    //     checkbox.checked = event.detail.estTerminee;
+    //     task.estTerminee = event.detail.estTerminee;
+          
+    //     // Déplacer la tâche si nécessaire
+    //     moveTaskBasedOnStatus(taskDiv, task);
+    //   }
+    // }) as EventListener);
+    
   
   // Gérer le changement de l'état terminé
   checkbox.addEventListener("change", () => {
