@@ -307,17 +307,23 @@ aside{
   appearance: none;
   height: 24px;
   width: 24px;
-  background-color: transparent;
-  mask: url('https://www.svgrepo.com/show/13691/star.svg') no-repeat center;
-  -webkit-mask: url('https://www.svgrepo.com/show/13691/star.svg') no-repeat center;
-  background-size: cover;
+  background-color: #ccc; /* Couleur par défaut, changez selon vos besoins */
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
   cursor: pointer;
   transition: background-color 0.3s;
   border: none;
 }
 
+/* État actif/coché */
 .star-checkbox:checked {
-  background-color: #facc15; 
+  background-color: gold; /* Couleur quand l'étoile est sélectionnée */
 }
 
 .flex-1 {
