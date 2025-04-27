@@ -1,6 +1,6 @@
 import {createTaskPage} from "./createTaskPage.js";
 
-export function allTask(): HTMLElement
-{
-    return createTaskPage("Mes tâches", "fa fa-tasks");
+export function allTask(): HTMLElement {
+    const page = createTaskPage("Mes tâches", "fa fa-tasks");
+    return page;
 }

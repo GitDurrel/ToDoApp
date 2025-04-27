@@ -248,13 +248,13 @@ aside{
 .task-checkbox {
   width: 20px;
   height: 20px;
-  accent-color: #1d4ed8; /* bleu corporate */
+  accent-color: #1d4ed8; 
 }
 
 .star-checkbox {
   width: 20px;
   height: 20px;
-  accent-color: #f59e0b; /* jaune corporate */
+  accent-color: #f59e0b; 
 }
 
 .task-section {
@@ -351,9 +351,9 @@ aside{
 #completed-section {
   margin-top: 24px;
   padding: 16px;
-  background-color: #f5f5f5; /* gris clair */
+  background-color: #f5f5f5;
   border-radius: 8px;
-  max-width: 800px; /* limite la largeur */
+  max-width: 800px; 
   margin-left: auto;
   margin-right: auto;
 }

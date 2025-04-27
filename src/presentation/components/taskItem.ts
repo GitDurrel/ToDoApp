@@ -1,4 +1,5 @@
 import { Task } from "../../types/Task.js";
+import { TaskServices } from "../../business/services/TaskServices.js";
 
 export function taskItem(task: Task): HTMLDivElement {
   const taskDiv = document.createElement("div");
@@ -43,7 +44,7 @@ export function taskItem(task: Task): HTMLDivElement {
   taskDiv.appendChild(div);
 
   // * On ajoute la gestion du clic directement ici
-  handleTaskCheckbox(taskDiv, task);
+  handleTaskEvents(taskDiv, task);
 
   const tasksContainer = document.getElementById("incomplete-tasks-container") as HTMLDivElement;
   if (tasksContainer) 
@@ -51,60 +52,106 @@ export function taskItem(task: Task): HTMLDivElement {
     tasksContainer.appendChild(taskDiv);
   }
 
-  return tasksContainer;
+  return taskDiv;
 }
 
-function handleTaskCheckbox(taskDiv: HTMLDivElement, task: Task) {
+function handleTaskEvents(taskDiv: HTMLDivElement, task: Task) {
   const checkbox = taskDiv.querySelector(".task-checkbox") as HTMLInputElement;
-
+  const starCheckbox = taskDiv.querySelector(".star-checkbox") as HTMLInputElement;
+  
+  // Gérer le changement de l'état terminé
   checkbox.addEventListener("change", () => {
     task.estTerminee = checkbox.checked;
-
-    let completedSection = document.getElementById("completed-section");
-    if (!completedSection) {
-      completedSection = document.createElement("div");
-      completedSection.id = "completed-section";
-      completedSection.innerHTML = `
-        <div class="flex justify-between items-center mb-2">
-          <h2>Terminées (0)</h2>
-          <button id="toggle-completed" class="text-sm text-blue-500 hover:underline">Réduire</button>
-        </div>
-        <div id="completed-tasks"></div>
-      `;
-
-      const toggleButton = completedSection.querySelector("#toggle-completed") as HTMLButtonElement;
-      const completedTasksContainer = completedSection.querySelector("#completed-tasks") as HTMLDivElement;
-
-      toggleButton.addEventListener("click", () => {
-        if (completedTasksContainer.style.display === "none") {
-          completedTasksContainer.style.display = "block";
-        toggleButton.textContent = "Réduire";
-        } else {
-          completedTasksContainer.style.display = "none";
-          toggleButton.textContent = "Déplier";
-        }
-      });
-
-      const content = document.getElementById('content');
-      if (content) 
-      {
-       content.appendChild(completedSection);
+    
+    // Trouver la tâche correspondante dans le service
+    const allTasks = TaskServices.getTasks();
+    const taskModel = allTasks.find(t => t.data.id === task.id);
+    
+    if (taskModel) {
+        // Mettre à jour l'état de la tâche
+        taskModel.data.estTerminee = task.estTerminee;
+        TaskServices.updateTask(taskModel);
+    }
+    
+    // Gérer le déplacement visuel de la tâche
+    moveTaskBasedOnStatus(taskDiv, task);
+});
+  
+  // Gérer le changement de l'état important
+  starCheckbox.addEventListener("change", () => {
+      task.estImportante = starCheckbox.checked;
+      
+      // Mettre à jour dans le localStorage
+      const allTasks = TaskServices.getTasks();
+      const taskModel = allTasks.find(t => t.data.id === task.id);
+      
+      if (taskModel) {
+          taskModel.data.estImportante = task.estImportante;
+          TaskServices.updateTask(taskModel);
       }
-    }
-
-    const completedTasksContainer = document.getElementById("completed-tasks")!;
-    const tasksContainer = document.getElementById("incomplete-tasks-container")!;
-
-    if (task.estTerminee) 
-    {
-      completedTasksContainer.appendChild(taskDiv);
-    } else 
-    {
-      tasksContainer.appendChild(taskDiv);
-    }
-
-    updateCompletedTitle();
   });
+  
+
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "×";
+  deleteButton.className = "delete-task-btn";
+  deleteButton.addEventListener("click", () => {
+      // Supprimer du DOM
+      taskDiv.remove();
+      
+      // Supprimer du localStorage
+      TaskServices.deleteTask(task.id);
+      
+      // Mettre à jour le compteur
+      updateCompletedTitle();
+  });
+  
+  taskDiv.querySelector(".todo-item")?.appendChild(deleteButton);
+}
+
+// Fonction séparée pour déplacer la tâche
+function moveTaskBasedOnStatus(taskDiv: HTMLDivElement, task: Task) {
+  let completedSection = document.getElementById("completed-section");
+  if (!completedSection) {
+    completedSection = document.createElement("div");
+    completedSection.id = "completed-section";
+    completedSection.innerHTML = `
+      <div class="flex justify-between items-center mb-2">
+        <h2>Terminées (0)</h2>
+        <button id="toggle-completed" class="text-sm text-blue-500 hover:underline">Réduire</button>
+      </div>
+      <div id="completed-tasks"></div>
+    `;
+
+    const toggleButton = completedSection.querySelector("#toggle-completed") as HTMLButtonElement;
+    const completedTasksContainer = completedSection.querySelector("#completed-tasks") as HTMLDivElement;
+
+    toggleButton.addEventListener("click", () => {
+      if (completedTasksContainer.style.display === "none") {
+        completedTasksContainer.style.display = "block";
+        toggleButton.textContent = "Réduire";
+      } else {
+        completedTasksContainer.style.display = "none";
+        toggleButton.textContent = "Déplier";
+      }
+    });
+
+    const content = document.getElementById('content');
+    if (content) {
+      content.appendChild(completedSection);
+    }
+  }
+
+  const completedTasksContainer = document.getElementById("completed-tasks")!;
+  const tasksContainer = document.getElementById("incomplete-tasks-container")!;
+
+  if (task.estTerminee) {
+    completedTasksContainer.appendChild(taskDiv);
+  } else {
+    tasksContainer.appendChild(taskDiv);
+  }
+
+  updateCompletedTitle();
 }
 
 function updateCompletedTitle() {

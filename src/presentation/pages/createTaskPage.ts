@@ -1,5 +1,6 @@
 import { TaskModel } from '../../business/models/TaskModel.js';
 import { taskItem } from '../components/taskItem.js';
+import { TaskServices } from '../../business/services/TaskServices.js';
 
 export function createTaskPage(title: string, faIconClass: string, showDate: boolean = false): HTMLElement {
     const container = document.createElement('div');
@@ -73,20 +74,65 @@ export function createTaskPage(title: string, faIconClass: string, showDate: boo
                     alert("Veuillez choisir une date de réalisation !");
                     return;
                 }
+                // Utiliser la date d'aujourd'hui pour "Ma journée"
+                let taskDate;
+                if (title === "Aujourd'hui") {
+                    taskDate = new Date(); // Date du jour pour "Ma journée"
+                } else {
+                taskDate = dateValue ? new Date(dateValue) : new Date();
+                }
+                // Définir estImportante à true si la page est "Important"
+                const isImportant = title === 'Important';
+                const newTask = new TaskModel(titre, taskDate, isImportant, heure);
 
-                const taskDate = dateValue ? new Date(dateValue) : new Date();
-                const newTask = new TaskModel(titre, taskDate, false,heure);
+                // * Ajout de la tâche au localStorage
+                TaskServices.addTask(newTask);
+
+                // * Créer et afficher l'élément de tâche
                 const todoItem = taskItem(newTask.data);
+                container.querySelector('#incomplete-tasks-container')?.appendChild(todoItem);
 
-                tasksContainer.appendChild(todoItem);
-
+                // Réinitialiser les champs
                 input.value = "";
                 timeInput.value = "";
                 if (dateInput) dateInput.value = "";
                 popup.classList.add('hidden');
             });
         }
+        loadTasks(title, tasksContainer);
     }, 0);
 
     return container;
+}
+
+// Fonction pour charger les tâches du localStorage
+function loadTasks(pageTitle: string, container: HTMLElement) {
+    // Récupérer toutes les tâches
+    const tasks = TaskServices.getTasks();
+    
+    // Filtrer les tâches selon la page actuelle
+    let filteredTasks = tasks;
+    
+    if (pageTitle === 'Aujourd\'hui') {
+        // Filtrer les tâches d'aujourd'hui
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        filteredTasks = tasks.filter(task => {
+            const taskDate = new Date(task.data.DateRealisation);
+            taskDate.setHours(0, 0, 0, 0);
+            return taskDate.getTime() === today.getTime();
+        });
+    } else if (pageTitle === 'Important') {
+        // Filtrer les tâches importantes
+        filteredTasks = tasks.filter(task => task.data.estImportante);
+    } else if (pageTitle === 'Non terminées') {
+        // Filtrer les tâches non terminées
+        filteredTasks = tasks.filter(task => !task.data.estTerminee);
+    }
+    
+    // Afficher les tâches filtrées
+    filteredTasks.forEach(task => {
+        const todoItem = taskItem(task.data);
+        container.appendChild(todoItem);
+    });
 }

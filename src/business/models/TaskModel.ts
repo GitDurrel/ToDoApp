@@ -1,12 +1,12 @@
 import { Task } from "../../types/Task.js";
 
 export class TaskModel {
-  private _task: Task;
+  public task: Task;
 
-  constructor(titre: string, dateRealisation: Date, estImportante = false,heure: string) {
+  constructor(titre: string, dateRealisation: Date, estImportante = false,heure: string,idTask: string = Date.now().toString()) {
   
-    this._task = {
-      id: Date.now().toString(),
+    this.task = {
+      id: idTask,
       titre,
       estTerminee: false,
       estImportante,
@@ -18,16 +18,16 @@ export class TaskModel {
 
   // * Lire les données de la tâche
   get data(): Task {
-    return this._task;
+    return this.task;
   }
 
   // * Basculer terminée / non-terminée
   BasculerTerminee() {
-    this._task.estTerminee = !this._task.estTerminee;
+    this.task.estTerminee = !this.task.estTerminee;
   }
 
   // * Basculer importante / pas importante
   BasculerImportante() {
-    this._task.estImportante = !this._task.estImportante;
+    this.task.estImportante = !this.task.estImportante;
   }
 }
